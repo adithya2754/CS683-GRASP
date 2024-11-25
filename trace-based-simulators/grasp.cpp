@@ -65,15 +65,20 @@ int main(int argc, char* argv[]) {
             int max_rrip = set[0].rrip;
             for ( int t = 1 ; t < assoc ; t++ ) {
                 if ( set[t].rrip > max_rrip ) {
-                    max_rrip = set[t].rrip; 
+                    max_rrip = set[t].rrip;
                     min_index = t;
                 }
             }
 
+            // changing rrip values of less than or moderately used to low used and incrementing rrip values of high used && enhancement@2 &&
             if ( max_rrip < M_RRIP ) {
                 int diff = M_RRIP - max_rrip;
                 for ( int t = 0 ; t < assoc ; t++ ) {
-                    set[t].rrip += diff;
+                    if ( set[t].rrip >= I_RRIP ) {
+                        set[t].rrip += diff;
+                    } else {
+                        set[t].rrip += 1;
+                    }
                     assert(set[t].rrip <= M_RRIP);
                 }
             }
@@ -93,6 +98,12 @@ int main(int argc, char* argv[]) {
             // hit
             if ( in_high_range ) {
                 block->rrip = H_RRIP;
+                // moving all other blocks to P_RRIP && enhancement@1 &&
+                for ( int t = 1 ; t < assoc ; t++ ) {
+                    if ( set[t].rrip == H_RRIP ) {
+                        set[t].rrip = P_RRIP;
+                    }
+                }
             } else {
                 if ( block->rrip > 0 ) {
                     block->rrip--;
