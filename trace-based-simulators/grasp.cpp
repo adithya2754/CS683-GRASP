@@ -97,13 +97,13 @@ int main(int argc, char* argv[]) {
         } else {
             // hit
             if ( in_high_range ) {
-                block->rrip = H_RRIP;
                 // moving all other blocks to P_RRIP && enhancement@1 &&
-                for ( int t = 1 ; t < assoc ; t++ ) {
+                for ( int t = 0 ; t < assoc ; t++ ) {
                     if ( set[t].rrip == H_RRIP ) {
                         set[t].rrip = P_RRIP;
                     }
                 }
+                block->rrip = H_RRIP;
             } else {
                 if ( block->rrip > 0 ) {
                     block->rrip--;
